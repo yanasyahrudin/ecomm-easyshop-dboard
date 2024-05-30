@@ -1,7 +1,7 @@
 /** @format */
 
 import React from "react";
-import { FaImages } from "react-icons/fa";
+import { FaImages, FaRegEdit } from "react-icons/fa";
 import { FadeLoader } from "react-spinners";
 
 const Profile = () => {
@@ -48,10 +48,44 @@ const Profile = () => {
               )}
               <input type="file" className="hidden"  id="img"/>
             </div>
+
+
+              <div className="px-0 md:px-5 py-2">
+                <div className="flex justify-between text-sm flex-col gap-2 p-4 bg-slate-800 rounded-md relative">
+                  <span className="p-[6px] bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50 absolute right-2 top-2 cursor-pointer"> <FaRegEdit/></span>
+                  <div className="flex gap-2">
+                    <span>Name: </span>
+                    <span>Yana Syahrudin</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>Email: </span>
+                    <span>yana@gmail.com</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>Role: </span>
+                    <span>Seller</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>Status: </span>
+                    <span>Active</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span>Payment Account: </span>
+                    <span>Pending</span>
+                  </div>
+
+                </div>
+              </div>
+
+
+
+
           </div>
         </div>
 
-        <div className="w-full md:w-6/12"></div>
+        <div className="w-full md:w-6/12">
+
+        </div>
       </div>
     </div>
   );
