@@ -4,8 +4,19 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { PropagateLoader } from "react-spinners";
+import { overrideStyle } from "../../utils/utils";
+import { useDispatch } from 'react-redux';
+import { seller_register } from "../../store/Reducers/authReducer";
+
 
 const Register = () => {
+
+  const dispatch = useDispatch()
+
+  const { loader } = useSelector((state) => state.auth);
+
   const [state, setState] = useState({
     name: "",
     email: "",
@@ -20,10 +31,11 @@ const Register = () => {
   };
 
   const submit = (e) => {
-    e.preventDefault()
-    console.log(state);
-  }
+    e.preventDefault();
+    dispatch(seller_register(state))
+  };
 
+ 
   return (
     <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center">
       <div className="w-[350px] text-[#ffffff] p-2">
@@ -88,8 +100,10 @@ const Register = () => {
               </label>
             </div>
 
-            <button className="bg-slate-800 w-full hover:shadow-blue-300/hover:shadow-lg text-white rounded-md px-7 py-2 mb-3">
-              Sign Up
+             <button disabled={loader? true: false} className="bg-slate-800 w-full hover:shadow-blue-300/hover:shadow-lg text-white rounded-md px-7 py-2 mb-3">
+              {
+                loader ? <PropagateLoader color='#fff'cssOverride={overrideStyle}/> : 'Sign Up'
+              }
             </button>
 
             <div className="flex item-center mb-3 gap-3 justify-center">
