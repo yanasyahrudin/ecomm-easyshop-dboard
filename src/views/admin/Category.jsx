@@ -1,23 +1,24 @@
 /** @format */
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "./../Pagination";
 import { FaEdit, FaImage, FaTrash } from "react-icons/fa";
 import { IoIosCloseCircle } from "react-icons/io";
-import { PropagateLoader } from 'react-spinners';
-import { overrideStyle } from '../../utils/utils';
-import {categoryAdd} from '../../store/Reducers/categoryReducer'
-import { useDispatch, useSelector } from 'react-redux';
+import { PropagateLoader } from "react-spinners";
+import { overrideStyle } from "../../utils/utils";
+import {
+  categoryAdd,
+  messageClear,
+} from "../../store/Reducers/categoryReducer";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const Category = () => {
-
-  const dispatch =useDispatch()
-  const {loader} = useSelector(state=> state.category)
-
-
-
-
+  const dispatch = useDispatch();
+  const { loader, successMessage, errorMessage } = useSelector(
+    (state) => state.category
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
@@ -42,12 +43,26 @@ const Category = () => {
   };
 
   const add_category = (e) => {
-    e.preventDefault()
-    dispatch(categoryAdd(state))
+    e.preventDefault();
+    dispatch(categoryAdd(state));
     // console.log(state)
-  }
+  };
 
-  // const loader = false
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      setState({
+        name: '',
+        image: ''
+      })
+      setImage('')
+    }
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(messageClear());
+    }
+  }, [successMessage, errorMessage]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -214,11 +229,19 @@ const Category = () => {
                     id="image"
                   />
                   <div className="mt-4">
-                  <button disabled={loader ? true : false}  className='bg-red-800 w-full hover:shadow-red-300/50 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3'>
-            {
-               loader ? <PropagateLoader color='#fff' cssOverride={overrideStyle} /> : 'Add Category'
-            } 
-            </button>
+                    <button
+                      disabled={loader ? true : false}
+                      className="bg-red-800 w-full hover:shadow-red-300/50 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
+                    >
+                      {loader ? (
+                        <PropagateLoader
+                          color="#fff"
+                          cssOverride={overrideStyle}
+                        />
+                      ) : (
+                        "Add Category"
+                      )}
+                    </button>
                   </div>
                 </div>
               </form>
