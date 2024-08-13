@@ -18,7 +18,7 @@ import Search from "../components/Search";
 
 const Category = () => {
   const dispatch = useDispatch();
-  const { loader, successMessage, errorMessage } = useSelector(
+  const { loader, successMessage, errorMessage, categorys } = useSelector(
     (state) => state.category
   );
 
@@ -115,13 +115,13 @@ const Category = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {[1, 2, 3, 4, 5].map((d, i) => (
+                  {categorys.map((d, i) => (
                     <tr key={i}>
                       <td
                         scope="row"
                         className="py-1 px-4 font-medium whitespace-nowrap"
                       >
-                        {d}
+                        {i+1}
                       </td>
                       <td
                         scope="row"
@@ -129,7 +129,7 @@ const Category = () => {
                       >
                         <img
                           className="w-[45px] h-[45px]"
-                          src={`http://localhost:3000/images/category/${d}.jpg`}
+                          src={d.image}
                           alt=""
                         />
                       </td>
@@ -137,7 +137,7 @@ const Category = () => {
                         scope="row"
                         className="py-1 px-4 font-medium whitespace-nowrap"
                       >
-                        Tshirt
+                        {d.name}
                       </td>
                       <td
                         scope="row"
