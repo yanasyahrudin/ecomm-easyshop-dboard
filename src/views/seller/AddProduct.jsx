@@ -109,6 +109,8 @@ const AddProduct = () => {
       formData.append('images',images[i])
       
     }
+    console.log(state);
+    
     dispatch(add_product(formData))
   };
 
