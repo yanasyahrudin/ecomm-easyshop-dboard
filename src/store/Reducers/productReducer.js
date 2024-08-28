@@ -19,6 +19,27 @@ export const add_product = createAsyncThunk(
 
 // End Method
 
+export const get_product = createAsyncThunk(
+  "product/get_product",
+  async (
+    productId,
+    { rejectWithValue, fulfillWithValue }
+  ) => {
+    try {
+      const { data } = await api.get(
+        `/product-get/${productId}`,
+        { withCredentials: true }
+      );
+      console.log(data)
+      return fulfillWithValue(data);
+    } catch (error) {
+      // console.log(error.response.data)
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 export const get_products = createAsyncThunk(
   "product/get_products",
   async (
@@ -48,6 +69,7 @@ export const productReducer = createSlice({
     errorMessage: "",
     loader: false,
     products: [],
+    product: '',
     totalProduct: 0,
   },
   reducers: {
@@ -72,6 +94,9 @@ export const productReducer = createSlice({
       .addCase(get_products.fulfilled, (state, { payload }) => {
         state.totalProduct = payload.totalProduct;
         state.products = payload.products;
+      })
+      .addCase(get_product.fulfilled, (state, { payload }) => {
+        state.product = payload.product;
       });
   },
 });
