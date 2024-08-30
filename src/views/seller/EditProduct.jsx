@@ -13,41 +13,23 @@ const EditProduct = () => {
   const { productId } = useParams()
 
   const dispatch = useDispatch();
-  const { products } = useSelector((state) => state.category);
+  const { categorys } = useSelector((state) => state.category);
+  const { product } = useSelector((state) => state.product);
  
+  useEffect(()=>{
+    dispatch(get_category({
+      searchValue: '',
+      parPage: '',
+      page: ''
+    }))
+  })
+
   useEffect(() => {
     dispatch(get_product(productId)
     );
   }, [productId]);
 
 
-
-  // const categorys = [
-  //   {
-  //     id: 1,
-  //     name: "Sports",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Tshirt",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Mobile",
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Computer",
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Watch",
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Pant",
-  //   },
-  // ];
 
   const [state, setState] = useState({
     name: "",
@@ -88,8 +70,7 @@ const EditProduct = () => {
 
 
 
-  console.log(images);
-  console.log(imageShow);
+
 
   const changeImage = (img, files) => {
     if (files.length>0) {
@@ -102,20 +83,16 @@ const EditProduct = () => {
 
   useEffect(() => {
     setState({
-      name: "Mens tshirt",
-      description: "The scope prop can only be used on",
-      discount: 5,
-      price: 255,
-      brand: "Easy",
-      stock: 10,
+      name: product.name,
+      description: product.description,
+      discount: product.discount,
+      price: product.price,
+      brand: product.brand,
+      stock: product.stock,
     });
-    setCategory("Tshirt");
-    setImageShow([
-      "http://localhost:3000/images/admin.jpg",
-      "http://localhost:3000/images/demo.jpg",
-      "http://localhost:3000/images/seller.png",
-    ]);
-  }, []);
+    setCategory(product.category);
+    setImageShow(product.images);
+  }, [product]);
 
   return (
     <div className="px-2 lg:px-7 pt-5">
@@ -271,7 +248,7 @@ const EditProduct = () => {
             <div className="grid lg:grid-cols-4 grid-cols-1 md:grid-cols-3 sm:grid-cols-2 sm:gap-4 md:gap-4 gap-3 w-full text-[#d0d2d6] mb-4">
               
               {
-                imageShow.map((img, i)=> <div>
+                imageShow?.map((img, i)=> <div>
                   <label htmlFor={i}>
                     <img src={img} alt="" />
                   </label>
