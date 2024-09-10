@@ -58,24 +58,24 @@ export const get_products = createAsyncThunk(
 // End Method
 
 export const product_image_update = createAsyncThunk(
-  "product/products_image_update",
-  async ({oldImage, newImage, productId}, { rejectWithValue, fulfillWithValue }) => {
-    try {
-      const formData = new FormData()
-      formData.append('oldImage', oldImage)
-      formData.append('newImage', oldImage)
-      formData.append('productId', oldImage)
-      const { data } = await api.post("/products-image-update", formData, {
-        withCredentials: true,
-      });
-      console.log(data);
-      return fulfillWithValue(data);
-    } catch (error) {
-      // console.log(error.response.data)
-      return rejectWithValue(error.response.data);
-    }
+  'product/product_image_update',
+  async( {oldImage,newImage,productId} ,{rejectWithValue, fulfillWithValue}) => {
+      
+      try {
+
+          const formData = new FormData()
+          formData.append('oldImage', oldImage)
+          formData.append('newImage', newImage)
+          formData.append('productId', productId)             
+          const {data} = await api.post('/product-image-update', formData,{withCredentials: true}) 
+          console.log(data)
+          return fulfillWithValue(data)
+      } catch (error) {
+          // console.log(error.response.data)
+          return rejectWithValue(error.response.data)
+      }
   }
-);
+)
 
 //end method
 
@@ -142,6 +142,10 @@ export const productReducer = createSlice({
       })
       .addCase(update_product.fulfilled, (state, { payload }) => {
         state.loader = false;
+        state.product = payload.product;
+        state.successMessage = payload.message;
+      })
+      .addCase(product_image_update.fulfilled, (state, { payload }) => {
         state.product = payload.product;
         state.successMessage = payload.message;
       });
