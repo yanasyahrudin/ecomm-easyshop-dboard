@@ -4,24 +4,23 @@ import React from "react";
 import { FaImages, FaRegEdit } from "react-icons/fa";
 import { FadeLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
-
+import { profile_image_upload } from "../../store/Reducers/authReducer";
 
 const Profile = () => {
-
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
-
 
   const image = true;
   const loader = true;
   const status = "active";
 
-  const add_image = (e) =>{
-    if (e.target.files.length>0) {
-      console.log(e.target.files[0]);
-      
+  const add_image = (e) => {
+    if (e.target.files.length > 0) {
+      const formData = new FormData();
+      formData.append("image", e.target.files[0]);
+      dispatch(profile_image_upload(formData));
     }
-  }
+  };
 
   return (
     <div className="px-2 lg:px-7 py-5">
@@ -29,7 +28,7 @@ const Profile = () => {
         <div className="w-full md:w-6/12">
           <div className="w-full p-4 bg-[#6a5fdf] rounded-md text-[#d0d2d6]">
             <div className="flex justify-center items-center py-3">
-              {image ?.image? (
+              {image?.image ? (
                 <label
                   htmlFor="img"
                   className="h-[150px] w-[200px] relative p-3 cursor-pointer overflow-hidden"
@@ -61,7 +60,12 @@ const Profile = () => {
                   )}
                 </label>
               )}
-              <input onChange={add_image} type="file" className="hidden" id="img" />
+              <input
+                onChange={add_image}
+                type="file"
+                className="hidden"
+                id="img"
+              />
             </div>
 
             <div className="px-0 md:px-5 py-2">
@@ -105,7 +109,7 @@ const Profile = () => {
             </div>
 
             <div className="px-0 md:px-5 py-2">
-              {!userInfo ?.shopInfo? (
+              {!userInfo?.shopInfo ? (
                 <form>
                   <div className="flex flex-col w-full gap-1 mb-2">
                     <label htmlFor="Shop">Shop Name</label>
@@ -185,7 +189,9 @@ const Profile = () => {
         <div className="w-full md:w-6/12">
           <div className="w-full pl-0 md:pl-7 mt-6 md:mt-0 ">
             <div className="bg-[#6a5fdf] rounded-md text-[#d0d2d6] p-4">
-              <h1 className="text-[#d0d2d6] text-lg mb-3 font">Change Password</h1>
+              <h1 className="text-[#d0d2d6] text-lg mb-3 font">
+                Change Password
+              </h1>
               <form>
                 <div className="flex flex-col w-full gap-1 mb-2">
                   <label htmlFor="email">Email</label>
@@ -218,8 +224,6 @@ const Profile = () => {
                     placeholder="New Password"
                   />
                 </div>
-
-                
 
                 <button className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 my-2">
                   Save Changes
