@@ -1,18 +1,26 @@
 /** @format */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FaImages, FaRegEdit } from "react-icons/fa";
 import { FadeLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
-import { profile_image_upload } from "../../store/Reducers/authReducer";
+import { profile_image_upload,messageClear } from "../../store/Reducers/authReducer";
+import { toast } from "react-hot-toast";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo, loader,successMessage } = useSelector((state) => state.auth);
 
-  const image = true;
-  const loader = true;
   const status = "active";
+
+  useEffect(() => {
+    if (successMessage) {
+      toast.success(successMessage);
+      dispatch(messageClear());
+      
+  
+    }
+  }, [successMessage]);
 
   const add_image = (e) => {
     if (e.target.files.length > 0) {
@@ -28,13 +36,13 @@ const Profile = () => {
         <div className="w-full md:w-6/12">
           <div className="w-full p-4 bg-[#6a5fdf] rounded-md text-[#d0d2d6]">
             <div className="flex justify-center items-center py-3">
-              {image?.image ? (
+              {userInfo?.image ? (
                 <label
                   htmlFor="img"
                   className="h-[150px] w-[200px] relative p-3 cursor-pointer overflow-hidden"
                 >
-                  <img src="http://localhost:3000/images/demo.jpg" alt="" />
-                  {!loader && (
+                  <img src={userInfo.image} alt="" />
+                  {loader && (
                     <div className="bg-slate-600 absolute left-0 top-0 w-full h-full opacity-70 flex justify-center items-center z-20">
                       <span>
                         <FadeLoader />
