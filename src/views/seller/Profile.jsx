@@ -1,15 +1,29 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaImages, FaRegEdit } from "react-icons/fa";
 import { FadeLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
-import { profile_image_upload,messageClear } from "../../store/Reducers/authReducer";
+import {
+  profile_image_upload,
+  messageClear, profile_info_add
+} from "../../store/Reducers/authReducer";
 import { toast } from "react-hot-toast";
+import { overrideStyle } from "../../utils/utils";
+import { PropagateLoader } from "react-spinners";
 
 const Profile = () => {
+  const [state, setState] = useState({
+    division: "",
+    district: "",
+    shopName: "",
+    sub_district: "",
+  });
+
   const dispatch = useDispatch();
-  const { userInfo, loader,successMessage } = useSelector((state) => state.auth);
+  const { userInfo, loader, successMessage } = useSelector(
+    (state) => state.auth
+  );
 
   const status = "active";
 
@@ -17,8 +31,6 @@ const Profile = () => {
     if (successMessage) {
       toast.success(successMessage);
       dispatch(messageClear());
-      
-  
     }
   }, [successMessage]);
 
@@ -28,6 +40,18 @@ const Profile = () => {
       formData.append("image", e.target.files[0]);
       dispatch(profile_image_upload(formData));
     }
+  };
+
+  const inputHandle = (e) => {
+    setState({
+      ...state,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const add = (e) => {
+    e.preventDefault();
+    dispatch(profile_info_add(state));
   };
 
   return (
@@ -118,10 +142,12 @@ const Profile = () => {
 
             <div className="px-0 md:px-5 py-2">
               {!userInfo?.shopInfo ? (
-                <form>
+                <form onSubmit={add}>
                   <div className="flex flex-col w-full gap-1 mb-2">
                     <label htmlFor="Shop">Shop Name</label>
                     <input
+                      value={state.shopName}
+                      onChange={inputHandle}
                       className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                       type="text"
                       name="shopName"
@@ -132,6 +158,8 @@ const Profile = () => {
                   <div className="flex flex-col w-full gap-1 mb-2">
                     <label htmlFor="divsion">Division Name</label>
                     <input
+                      value={state.division}
+                      onChange={inputHandle}
                       className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                       type="text"
                       name="divsion"
@@ -143,6 +171,8 @@ const Profile = () => {
                   <div className="flex flex-col w-full gap-1 mb-2">
                     <label htmlFor="district">District Name</label>
                     <input
+                      value={state.district}
+                      onChange={inputHandle}
                       className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                       type="text"
                       name="district"
@@ -152,18 +182,30 @@ const Profile = () => {
                   </div>
 
                   <div className="flex flex-col w-full gap-1 mb-2">
-                    <label htmlFor="subdis">Sub District Name</label>
+                    <label htmlFor="sub_district">Sub District Name</label>
                     <input
+                      value={state.sub_district}
+                      onChange={inputHandle}
                       className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                       type="text"
-                      name="subdis"
-                      id="subdis"
+                      name="sub_district"
+                      id="sub"
                       placeholder="Sub District Name"
                     />
                   </div>
 
-                  <button className="bg-red-500 hover:shadow-red-500/40 hover:shadow-md text-white rounded-md px-7 py-2 my-2">
-                    Save Changes
+                  <button
+                    disabled={loader ? true : false}
+                    className="bg-red-500 w-[280px] hover:shadow-red-300/50 hover:shadow-lg text-white rounded-md px-7 py-2 mb-3"
+                  >
+                    {loader ? (
+                      <PropagateLoader
+                        color="#fff"
+                        cssOverride={overrideStyle}
+                      />
+                    ) : (
+                      "Save Changes"
+                    )}
                   </button>
                 </form>
               ) : (
@@ -174,19 +216,19 @@ const Profile = () => {
                   </span>
                   <div className="flex gap-2">
                     <span>Shop Name: </span>
-                    <span>Easy Shop</span>
+                    <span>{userInfo.shopInfo?.shopName}</span>
                   </div>
                   <div className="flex gap-2">
                     <span>Division</span>
-                    <span>Subang</span>
+                    <span>{userInfo.shopInfo?.division}</span>
                   </div>
                   <div className="flex gap-2">
                     <span>District: </span>
-                    <span>Blanakan</span>
+                    <span>{userInfo.shopInfo?.district}</span>
                   </div>
                   <div className="flex gap-2">
                     <span>Sub District: </span>
-                    <span>Cilamaya Girang</span>
+                    <span>{userInfo.shopInfo?.sub_district}</span>
                   </div>
                 </div>
               )}

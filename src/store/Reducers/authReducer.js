@@ -82,7 +82,22 @@ export const seller_register = createAsyncThunk(
             return rejectWithValue(error.response.data)
         }
     }
-)
+) 
+//end method
+
+export const profile_info_add = createAsyncThunk(
+    'auth/profile_info_add',
+    async(info,{rejectWithValue, fulfillWithValue}) => { 
+        try {
+            const {data} = await api.post('/profile-info-add',info,{withCredentials: true})
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+) 
+
+//end method
 
     const returnRole = (token) => {
         if (token) {
