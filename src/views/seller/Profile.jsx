@@ -156,14 +156,14 @@ const Profile = () => {
                     />
                   </div>
                   <div className="flex flex-col w-full gap-1 mb-2">
-                    <label htmlFor="divsion">Division Name</label>
+                    <label htmlFor="division">Division Name</label>
                     <input
                       value={state.division}
                       onChange={inputHandle}
                       className="px-4 py-2 focus:border-indigo-200 outline-none bg-[#6a5fdf] border border-slate-700 rounded-md text-[#d0d2d6]"
                       type="text"
-                      name="divsion"
-                      id="divsion"
+                      name="division"
+                      id="division"
                       placeholder="Divsion Name"
                     />
                   </div>
