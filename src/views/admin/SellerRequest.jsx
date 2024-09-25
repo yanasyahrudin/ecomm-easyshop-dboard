@@ -64,38 +64,38 @@ const SellerRequest = () => {
               </tr>
             </thead>
             <tbody>
-              {[1, 2, 3, 4, 5].map((d, i) => (
+              {sellers.map((d, i) => (
                 <tr className="border-b border-slate-700" key={i}>
                   <td
                     scope="row"
                     className="py-2 px-4 font-medium whitespace-nowrap"
                   >
-                    {d}
+                    {i+1}
                   </td>
 
                   <td
                     scope="row"
                     className="py-2 px-4 font-medium whitespace-nowrap"
                   >
-                    Yana Syahrudin
+                    {d.name}
                   </td>
                   <td
                     scope="row"
                     className="py-2 px-4 font-medium whitespace-nowrap"
                   >
-                    yana@gmail.com
+                    {d.email}
                   </td>
                   <td
                     scope="row"
                     className="py-2 px-4 font-medium whitespace-nowrap"
                   >
-                    <span>Inactive</span>
+                    <span>{d.payment}</span>
                   </td>
                   <td
                     scope="row"
                     className="py-2 px-4 font-medium whitespace-nowrap"
                   >
-                    <span>Pending</span>
+                    <span>{d.status}</span>
                   </td>
 
                   <td
@@ -104,7 +104,7 @@ const SellerRequest = () => {
                   >
                     <div className="flex justify-start items-center gap-4">
                       <Link
-                        to="/admin/dashboard/seller/details/2"
+                        to={`/admin/dashboard/seller/details/${d._id}`}
                         className="p-[6px] bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50"
                       >
                         <FaEye />
